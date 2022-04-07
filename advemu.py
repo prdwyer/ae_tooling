@@ -6,7 +6,6 @@ import argparse
 import os
 import zipfile
 import sys
-import requests
 import shutil
 import subprocess
 
@@ -36,14 +35,6 @@ def run_win_cmd(cmd):
         print(line)
     if errcode is not None:
         raise Exception('cmd %s failed, see above for details', cmd)
-
-def download_file(url):
-    local_filename = url.split('/')[-1]
-    with requests.get(url, stream=True) as r:
-        with open(local_filename, 'wb') as f:
-            shutil.copyfileobj(r.raw, f)
-
-    return local_filename
 
 
 def print_campaign(commands):
@@ -111,15 +102,8 @@ def main():
         #git clone the scythe repo
         url = "https://github.com/scythe-io/community-threats/archive/refs/heads/master.zip"
 
-        r = requests.get(url)
         sys.exit()
 
-	#logging.info("STARTING MAIN")
-	#output=list()
-	#output.append(do_directory(args.directory))
-
-	#get_inputs()
-	#old_town()
 
 if __name__== "__main__":
 	main()
