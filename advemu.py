@@ -8,6 +8,7 @@ import zipfile
 import sys
 import requests
 import shutil
+import subprocess
 
 banner = '''
     _       _         _____
@@ -25,7 +26,16 @@ parser.add_argument('--interactive', help='run in interactive mode', dest='inter
 parser.add_argument('--getscythefiles', help='retrieve sythce rules', dest='getscythefiles')
 args=parser.parse_args()
 
-
+def run_win_cmd(cmd):
+    result = []
+    process = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    for line in process.stdout:
+        result.append(line)
+    errcode = process.returncode
+    for line in result:
+        print(line)
+    if errcode is not None:
+        raise Exception('cmd %s failed, see above for details', cmd)
 
 def download_file(url):
     local_filename = url.split('/')[-1]
@@ -85,6 +95,7 @@ def execution(to_execute):
 
     for comm in to_execute:
         print("Executing...... "+ comm)
+        run_win_command(comm)
         #(comm)
 
 def main():
